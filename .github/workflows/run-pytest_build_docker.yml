@@ -39,5 +39,16 @@ jobs:
       - name: Run Docker container
         run: docker run -d -p 5000:5000 flask-docker-ci  # Runs a container from the built image
 
+      - name: Wait for Flask to be ready
+        run: |
+          for i in {1..10}; do
+            if curl -s http://localhost:5000 > /dev/null; then
+              echo "Flask app is ready"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 2
+          done
+
       - name: Test app endpoint
         run: curl http://localhost:5000  # Makes a test request to the app running inside the container to verify it's working (health check)
