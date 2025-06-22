@@ -4,7 +4,7 @@ name: Run Pytest and Build Docker Image
 
 on:
   push:
-    branches: [main] # Trigger this workflow only when code is pushed to the main branch
+    branches: [main] # Triggers the workflow every time code is pushed to the main branch
 
 jobs:
   test-and-build:
@@ -12,32 +12,32 @@ jobs:
 
     steps:
       - name: checkout node
-        uses: actions/checkout@v3 # Fetch your repository's source code
+        uses: actions/checkout@v3 # Fetch your repository's source code - Clones the latest code from your GitHub repo into the runner
 
       - name: setup python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5 # Installs Python 3.10 so you can run your app and tests
         with:
           python-version: '3.10'
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies # Installs packages from requirements.txt + test tools
         run: pip install -r requirements.txt
 
-      - name: Run Python tests
+      - name: Run Python tests # Runs your test suite to verify code correctness
         run: pytest    # Runs all test files like test_*.py
 
       - name: Lint dockerfile with Hadolint
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.1.0  #  Analyzes your Dockerfile for syntax issues and bad practices
         with:
-          dockerfile: Dockerfile
+          dockerfile: Dockerfile               #  This found the issue - Update your Dockerfile to include the --no-cache-dir option:
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3  # Advanced builder for Docker
+        uses: docker/setup-buildx-action@v3    # Sets up a more powerful Docker builder that supports caching and multi-platform builds
 
       - name: Build Docker image
-        run: docker build -t flask-docker-ci:latest .
+        run: docker build -t flask-docker-ci:latest .    # Builds a Docker image from your app using the Dockerfile
 
       - name: Run Docker container
-        run: docker run -d -p 5000:5000 flask-docker-ci
+        run: docker run -d -p 5000:5000 flask-docker-ci  # Runs a container from the built image
 
       - name: Test app endpoint
-        run: curl http://localhost:5000  # Optional: confirm container is running and responding
+        run: curl http://localhost:5000  # Makes a test request to the app running inside the container to verify it's working (health check)
