@@ -39,7 +39,7 @@ jobs:
       - name: Run Docker container
         run: docker run -d -p 5000:5000 flask-docker-ci  # Runs a container from the built image
 
-      - name: Wait for Flask to be ready
+      - name: Wait for Flask to be ready                 # wait for server to be ready
         run: |
           for i in {1..10}; do
             if curl -s http://localhost:5000 > /dev/null; then
