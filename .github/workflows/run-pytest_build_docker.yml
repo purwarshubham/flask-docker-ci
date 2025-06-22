@@ -35,12 +35,15 @@ jobs:
         uses: docker/setup-buildx-action@v3    # Sets up a more powerful Docker builder that supports caching and multi-platform builds
 
       - name: Build Docker image
+        if: ${{ success() }}  # Only runs if tests passed
         run: docker build -t flask-docker-ci:latest .    # Builds a Docker image from your app using the Dockerfile
 
       - name: Run Docker container
+        if: ${{ success() }}  # ⬅️ this means "only if all steps before this passed"
         run: docker run -d -p 5000:5000 flask-docker-ci  # Runs a container from the built image
 
-      - name: Wait for Flask to be ready                 # wait for server to be ready
+      - name: Wait for Flask to be ready
+        if: ${{ success() }}  # this means "only if all steps before this passed"
         run: |
           for i in {1..10}; do
             if curl -s http://localhost:5000 > /dev/null; then
@@ -52,4 +55,5 @@ jobs:
           done
 
       - name: Test app endpoint
+        if: ${{ success() }}  # Only runs if tests passed
         run: curl http://localhost:5000  # Makes a test request to the app running inside the container to verify it's working (health check)
