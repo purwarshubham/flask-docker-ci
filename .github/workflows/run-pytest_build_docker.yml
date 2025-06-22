@@ -39,7 +39,7 @@ jobs:
         run: docker build -t flask-docker-ci:latest .    # Builds a Docker image from your app using the Dockerfile
 
       - name: Run Docker container
-        if: ${{ success() }}  # ⬅️ this means "only if all steps before this passed"
+        if: ${{ success() }}  # this means "only if all steps before this passed"
         run: docker run -d -p 5000:5000 flask-docker-ci  # Runs a container from the built image
 
       - name: Wait for Flask to be ready
