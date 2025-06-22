@@ -1,0 +1,27 @@
+name: Run Pytest
+
+on:
+  push:
+    branches: [main] # Trigger this workflow only when code is pushed to the main branch
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout node
+        uses: actions/checkout@v3 # Fetch your repository's source code
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.10
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python tests
+        run: pytest    # Runs all test files like test_*.py
+
+
+
