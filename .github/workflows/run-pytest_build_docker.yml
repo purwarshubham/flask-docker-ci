@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Python tests # Runs your test suite to verify code correctness
         run: pytest    # Runs all test files like test_*.py
-        continue-on-error: true  # Optional (default behavior, but explicit) # Stop further steps from executing (unless continue-on-error: true is set)
+        continue-on-error: false  # Optional (default behavior, but explicit) # Stop further steps from executing (unless continue-on-error: true is set)
 
       - name: Lint dockerfile with Hadolint
         uses: hadolint/hadolint-action@v3.1.0  #  Analyzes your Dockerfile for syntax issues and bad practices
