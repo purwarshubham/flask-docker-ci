@@ -5,7 +5,7 @@ def test_status_false():
     assert not False
 
 def test_sum():
-    assert sum([1, 2, 3]) == 3
+    assert sum([1, 2, 3]) == 6
 
 def test_string_contains():
     greeting = "hello docker world"
