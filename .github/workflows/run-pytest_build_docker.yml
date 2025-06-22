@@ -1,0 +1,43 @@
+# This workflow runs pytest and builds the docker image
+
+name: Run Pytest and Build Docker Image
+
+on:
+  push:
+    branches: [main] # Trigger this workflow only when code is pushed to the main branch
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout node
+        uses: actions/checkout@v3 # Fetch your repository's source code
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python tests
+        run: pytest    # Runs all test files like test_*.py
+
+      - name: Lint dockerfile with Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3  # Advanced builder for Docker
+
+      - name: Build Docker image
+        run: docker build -t flask-docker-ci:latest .
+
+      - name: Run Docker container
+        run: docker run -d -p 5000:5000 flask-docker-ci
+
+      - name: Test app endpoint
+        run: curl http://localhost:5000  # Optional: confirm container is running and responding
