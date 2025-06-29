@@ -18,6 +18,6 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 5000
-      env:
+        env:
         - name: WELCOME_MESSAGE
           value: "Hello from updated deployment!"
