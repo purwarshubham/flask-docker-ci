@@ -13,7 +13,7 @@ spec:
         app: flask
     spec:
       containers:
-      - name: flask
+      - name: flask-app
         image: flask-docker-ci:local
         imagePullPolicy: Never
         ports:
