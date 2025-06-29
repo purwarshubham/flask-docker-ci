@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: flask-docker-ci:local
+        image: flask-docker-ci:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 5000
