@@ -5,6 +5,8 @@
 
 ## install docker
 
+docker build -t flask-docker-ci:latest .
+
 ## install kubectl (kubernetes CLI)
 
 brew install kubectl
@@ -37,3 +39,7 @@ minikube service flask-service --url
 kubectl get pods
 
 kubectl apply -f deployment.yaml
+
+kubectl get pods -n default
+
+kubectl exec -it flask-app-75cf9f9478-ss59c -- /bin/sh
